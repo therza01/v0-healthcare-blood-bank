@@ -60,8 +60,11 @@
   --teal: oklch(0.5 0.12 175);
   --teal-light: oklch(0.92 0.04 175);
   --emergency: oklch(0.55 0.22 25);
+  --emergency-foreground: oklch(0.98 0 0);
   --warning: oklch(0.75 0.15 85);
+  --warning-foreground: oklch(0.2 0.05 85);
   --success: oklch(0.6 0.15 145);
+  --success-foreground: oklch(0.98 0 0);
   --savanna: oklch(0.85 0.1 70);
   --sunset: oklch(0.65 0.2 35);
 }
@@ -162,8 +165,11 @@
   --color-teal: var(--teal);
   --color-teal-light: var(--teal-light);
   --color-emergency: var(--emergency);
+  --color-emergency-foreground: var(--emergency-foreground);
   --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
   --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
   --color-savanna: var(--savanna);
   --color-sunset: var(--sunset);
 }
