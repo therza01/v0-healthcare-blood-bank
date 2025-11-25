@@ -41,20 +41,18 @@ export async function registerHospital(formData: FormData): Promise<AuthResult> 
 
     const passwordHash = await hashPassword(password)
 
-    // Create user
-    const userResult = await sql`
-      INSERT INTO users (email, password_hash, role)
-      VALUES (${email}, ${passwordHash}, 'hospital')
-      RETURNING id, email, role
-    `
+    const userResult = await sql.query(
+      `INSERT INTO users (email, password_hash, role) VALUES ($1, $2, $3) RETURNING id, email, role`,
+      [email, passwordHash, "hospital"],
+    )
 
-    const userId = userResult[0].id
+    const userId = userResult.rows[0].id
 
     // Create hospital profile
-    await sql`
-      INSERT INTO hospitals (user_id, name, uid, license_number, registration_number)
-      VALUES (${userId}, ${hospitalName}, ${hospitalUID}, ${licenseNumber}, ${registrationNumber})
-    `
+    await sql.query(
+      `INSERT INTO hospitals (user_id, name, uid, license_number, registration_number) VALUES ($1, $2, $3, $4, $5)`,
+      [userId, hospitalName, hospitalUID, licenseNumber, registrationNumber],
+    )
 
     // Create session
     await createSession(userId)
@@ -89,20 +87,18 @@ export async function registerDonor(formData: FormData): Promise<AuthResult> {
 
     const passwordHash = await hashPassword(password)
 
-    // Create user
-    const userResult = await sql`
-      INSERT INTO users (email, password_hash, role, is_verified)
-      VALUES (${email}, ${passwordHash}, 'donor', true)
-      RETURNING id, email, role
-    `
+    const userResult = await sql.query(
+      `INSERT INTO users (email, password_hash, role, is_verified) VALUES ($1, $2, $3, $4) RETURNING id, email, role`,
+      [email, passwordHash, "donor", true],
+    )
 
-    const userId = userResult[0].id
+    const userId = userResult.rows[0].id
 
     // Create donor profile
-    await sql`
-      INSERT INTO donors (user_id, first_name, last_name, blood_type, phone, county)
-      VALUES (${userId}, ${firstName}, ${lastName}, ${bloodType}, ${phone}, ${county})
-    `
+    await sql.query(
+      `INSERT INTO donors (user_id, first_name, last_name, blood_type, phone, county) VALUES ($1, $2, $3, $4, $5, $6)`,
+      [userId, firstName, lastName, bloodType, phone, county],
+    )
 
     // Create session
     await createSession(userId)
@@ -137,20 +133,18 @@ export async function registerRider(formData: FormData): Promise<AuthResult> {
 
     const passwordHash = await hashPassword(password)
 
-    // Create user
-    const userResult = await sql`
-      INSERT INTO users (email, password_hash, role)
-      VALUES (${email}, ${passwordHash}, 'rider')
-      RETURNING id, email, role
-    `
+    const userResult = await sql.query(
+      `INSERT INTO users (email, password_hash, role) VALUES ($1, $2, $3) RETURNING id, email, role`,
+      [email, passwordHash, "rider"],
+    )
 
-    const userId = userResult[0].id
+    const userId = userResult.rows[0].id
 
     // Create rider profile
-    await sql`
-      INSERT INTO riders (user_id, first_name, last_name, phone, vehicle_type, license_number)
-      VALUES (${userId}, ${firstName}, ${lastName}, ${phone}, ${vehicleType}, ${licenseNumber})
-    `
+    await sql.query(
+      `INSERT INTO riders (user_id, first_name, last_name, phone, vehicle_type, license_number) VALUES ($1, $2, $3, $4, $5, $6)`,
+      [userId, firstName, lastName, phone, vehicleType, licenseNumber],
+    )
 
     // Create session
     await createSession(userId)
